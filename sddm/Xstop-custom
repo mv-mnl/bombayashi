@@ -1,0 +1,7 @@
+#!/bin/bash
+/usr/share/sddm/scripts/Xstop "$@"
+# Wait for Xorg to fully release its lock files before SDDM tries to restart
+for i in $(seq 1 10); do
+    ls /tmp/.X*-lock 2>/dev/null | grep -q . || break
+    sleep 0.3
+done
