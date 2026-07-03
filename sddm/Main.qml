@@ -153,7 +153,7 @@ Rectangle {
                 MouseArea { id: loginBtn; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: doLogin() }
             }
 
-            Text { id: err; text: ""; color: "#ff4444"; anchors.horizontalCenter: parent.horizontalCenter; font.family: pf.name; font.pixelSize: 10 * s }
+            Text { id: err; text: ""; color: "#ffffff"; anchors.horizontalCenter: parent.horizontalCenter; font.family: pf.name; font.pixelSize: 10 * s }
         }
     }
 
