@@ -1,0 +1,40 @@
+/* Layout de panel dividido para el menu principal: categorias a la izquierda, opciones a la derecha */
+
+mainbox {
+    children: [ inputbar, columns ];
+}
+
+columns {
+    orientation: horizontal;
+    spacing: 6px;
+    children: [ sidebar, listview ];
+}
+
+sidebar {
+    orientation: vertical;
+    width: 160px;
+    background-color: @bg-alt;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+button {
+    text-color: @fg;
+    padding: 8px 10px;
+    horizontal-align: 0;
+    border-radius: 6px;
+}
+
+button selected {
+    background-color: @accent;
+    text-color: @bg;
+}
+
+listview {
+    columns: 1;
+    lines: 12;
+}
+
+window {
+    width: 750px;
+}

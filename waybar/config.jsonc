@@ -1,0 +1,94 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 6,
+    "margin-left": 8,
+    "margin-right": 8,
+    "spacing": 4,
+
+    "modules-left": ["hyprland/workspaces", "network"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "pulseaudio",
+        "backlight",
+        "custom/cpu",
+        "custom/gpu",
+        "memory",
+        "custom/power"
+    ],
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "sort-by-number": true
+    },
+
+    "clock": {
+        "format": "{:%H:%M   %a %d %b}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-muted": " {volume}%",
+        "format-icons": {
+            "headphone": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "~/.config/rofi/scripts/volume.sh",
+        "on-click-right": "~/.config/hypr/scripts/audio.sh mute-toggle",
+        "on-scroll-up": "~/.config/hypr/scripts/audio.sh up",
+        "on-scroll-down": "~/.config/hypr/scripts/audio.sh down"
+    },
+
+    "network": {
+        "interval": 2,
+        "format-wifi": "󰤨   {bandwidthUpBytes}   {bandwidthDownBytes}",
+        "format-ethernet": "󰈀   {bandwidthUpBytes}   {bandwidthDownBytes}",
+        "format-linked": "",
+        "format-disconnected": "󰤭",
+        "format-disabled": "󰤭",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format-linked": "{ifname} (sin IP)",
+        "tooltip-format-disconnected": "Desconectado",
+        "on-click": "~/.config/rofi/scripts/network.sh"
+    },
+
+    "backlight": {
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "on-click": "~/.config/rofi/scripts/brightness.sh",
+        "on-scroll-up": "brightnessctl s +5%",
+        "on-scroll-down": "brightnessctl s 5%-"
+    },
+
+    "custom/cpu": {
+        "exec": "~/.config/waybar/scripts/cpu.sh",
+        "return-type": "json",
+        "interval": 3,
+        "format": "{}",
+        "tooltip": true
+    },
+
+    "custom/gpu": {
+        "exec": "~/.config/waybar/scripts/gpu.sh",
+        "return-type": "json",
+        "interval": 3,
+        "format": "{}",
+        "tooltip": true
+    },
+
+    "memory": {
+        "format": "{}% ",
+        "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB usados"
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "~/.config/rofi/scripts/powermenu.sh"
+    }
+}

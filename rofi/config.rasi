@@ -1,0 +1,104 @@
+configuration {
+    modi:                   "drun,run,window,ssh";
+    font:                   "JetBrainsMono Nerd Font 12";
+    show-icons:             true;
+    terminal:               "kitty";
+    ssh-client:             "ssh";
+    ssh-command:            "{terminal} -e '{ssh-client} {host} [-p {port}]'";
+    drun-display-format:    "{name}";
+    window-format:          "{w} · {c} · {t}";
+}
+
+* {
+    bg:       #0d0d0d;
+    bg-alt:   #1a1a1a;
+    fg:       #e6e6e6;
+    fg-dim:   #808080;
+    accent:   #ffffff;
+    urgent:   #cccccc;
+
+    /* Rofi trae un tema base (tipo Solarized) con sus propios nombres de
+       propiedad; hay que pisarlos también o las filas de la lista quedan
+       con los colores por defecto (crema/azul) sin importar lo de arriba. */
+    background: #0d0d0d;
+    foreground: #e6e6e6;
+    lightbg:    #1a1a1a;
+    lightfg:    #ffffff;
+    blue:       #999999;
+    red:        #cccccc;
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    background-color: @bg;
+    border:           2px solid;
+    border-color:     @accent;
+    border-radius:    12px;
+    width:            500px;
+    padding:          6px;
+}
+
+mainbox {
+    background-color: transparent;
+    spacing:          6px;
+    padding:          6px;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    8px;
+    padding:          10px 14px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder:       "buscar...";
+    placeholder-color: @fg-dim;
+}
+
+listview {
+    background-color: transparent;
+    lines:            8;
+    scrollbar:        false;
+    spacing:          2px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    6px;
+    padding:          8px 10px;
+    spacing:          8px;
+    children:         [ element-icon, element-text ];
+}
+
+element-icon {
+    size: 22px;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element.selected {
+    background-color: @accent;
+    text-color:       @bg;
+}
+
+element.urgent {
+    background-color: @urgent;
+    text-color:       @bg;
+}
+
+message {
+    background-color: @bg-alt;
+    border-radius:    6px;
+    padding:          6px 10px;
+}
