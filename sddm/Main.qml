@@ -92,21 +92,35 @@ Rectangle {
 
             Item {
                 width: parent.width; height: 36 * s
-                Rectangle { anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; width: parent.width; height: 1 * s; color: root.steel; opacity: userInput.activeFocus ? 1.0 : 0.3 }
-                Rectangle { anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; width: userInput.activeFocus ? parent.width : 0; height: 2 * s; color: root.latte; Behavior on width { NumberAnimation { duration: 300; easing.type: Easing.OutExpo } } }
-                TextInput {
-                    id: userInput
-                    anchors.fill: parent; color: "white"; font.family: pf.name; font.pixelSize: 18 * s; font.letterSpacing: 1.5 * s
-                    text: (userHelper.currentItem && userHelper.currentItem.uLogin) ? userHelper.currentItem.uLogin : (userModel.lastUser || "")
-                    clip: true; horizontalAlignment: TextInput.AlignHCenter; verticalAlignment: TextInput.AlignVCenter
-                    selectionColor: root.latte
-                    Keys.onTabPressed: pwdInput.forceActiveFocus()
-                    Keys.onReturnPressed: pwdInput.forceActiveFocus()
-                }
-                Text {
-                    anchors.centerIn: parent; text: "usuario..."; color: root.textDim; font.family: pf.name; font.pixelSize: 14 * s; font.letterSpacing: 1.5 * s
-                    opacity: userInput.text.length === 0 ? 0.5 : 0
-                    Behavior on opacity { NumberAnimation { duration: 400; easing.type: Easing.InOutSine } }
+                Rectangle { anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; width: parent.width; height: 1 * s; color: root.steel; opacity: 0.3 }
+                Row {
+                    anchors.fill: parent
+                    Item {
+                        width: 28 * s; height: parent.height
+                        Text { anchors.centerIn: parent; text: "◀"; color: "white"; font.pixelSize: 10 * s; opacity: prevUser.containsMouse ? 0.9 : 0.35; Behavior on opacity { NumberAnimation { duration: 150 } } }
+                        MouseArea {
+                            id: prevUser; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor
+                            onClicked: { if (userModel && userModel.rowCount() > 0) root.userIndex = (root.userIndex - 1 + userModel.rowCount()) % userModel.rowCount() }
+                        }
+                    }
+                    Item {
+                        width: parent.width - 56 * s; height: parent.height
+                        Text {
+                            anchors.centerIn: parent
+                            text: (userHelper.currentItem && userHelper.currentItem.uName) ? userHelper.currentItem.uName : "usuario"
+                            color: "white"; font.family: pf.name; font.pixelSize: 18 * s; font.letterSpacing: 1.5 * s
+                            elide: Text.ElideRight; width: parent.width
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+                    Item {
+                        width: 28 * s; height: parent.height
+                        Text { anchors.centerIn: parent; text: "▶"; color: "white"; font.pixelSize: 10 * s; opacity: nextUser.containsMouse ? 0.9 : 0.35; Behavior on opacity { NumberAnimation { duration: 150 } } }
+                        MouseArea {
+                            id: nextUser; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor
+                            onClicked: { if (userModel && userModel.rowCount() > 0) root.userIndex = (root.userIndex + 1) % userModel.rowCount() }
+                        }
+                    }
                 }
             }
 
@@ -178,7 +192,7 @@ Rectangle {
     }
 
     function doLogin() {
-        var u = userInput.text.length > 0 ? userInput.text : ((userHelper.currentItem && userHelper.currentItem.uLogin) ? userHelper.currentItem.uLogin : userModel.lastUser)
+        var u = (userHelper.currentItem && userHelper.currentItem.uLogin) ? userHelper.currentItem.uLogin : userModel.lastUser
         sddm.login(u, pwdInput.text, root.sessionIndex)
     }
 }
