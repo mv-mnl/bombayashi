@@ -31,6 +31,7 @@ tooltip label {
 
 #workspaces,
 #clock,
+#battery,
 #pulseaudio,
 #network,
 #backlight,
@@ -90,9 +91,14 @@ tooltip label {
 #memory.critical,
 #backlight.critical,
 #custom-cpu.critical,
-#custom-gpu.critical {
+#custom-gpu.critical,
+#battery.critical:not(.charging) {
     color: @accent;
     font-weight: bold;
+}
+
+#battery.warning:not(.charging) {
+    color: @fg-dim;
 }
 
 #custom-gpu.disconnected {
