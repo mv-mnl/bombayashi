@@ -58,6 +58,93 @@ gco() {
   [[ -n $files ]] && echo "$files" | xargs git checkout && git status -s
 }
 
+# Corrige grupo y permisos de la carpeta compartida (por si algo se copió mal)
+srv-fix() {
+  local dir="/srv/compartido" grupo="compartidos"
+  echo "Corrigiendo grupo ($grupo) y permisos en $dir..."
+  sudo chgrp -R "$grupo" "$dir" \
+    && sudo find "$dir" -type d -exec chmod 2775 {} + \
+    && sudo find "$dir" -type f -exec chmod 0664 {} + \
+    && echo "Listo."
+}
+
+# Envía un archivo/carpeta a /srv/compartido/Vault (busca en ~/Descargas si no lo encuentra tal cual)
+srv-send() {
+  local origen="$1" sub="$2"
+  local vault="/srv/compartido/Vault"
+
+  if [[ -z "$origen" ]]; then
+    echo "Uso: srv-send <archivo> [subcarpeta]"
+    return 1
+  fi
+
+  [[ ! -e "$origen" && -e "$HOME/Descargas/$origen" ]] && origen="$HOME/Descargas/$origen"
+
+  if [[ ! -e "$origen" ]]; then
+    echo "No encontré '$1' (busqué en el directorio actual y en ~/Descargas)"
+    return 1
+  fi
+
+  local destino="$vault${sub:+/$sub}"
+  mkdir -p "$destino" && mv -iv "$origen" "$destino/"
+}
+
+# Autocompletado de srv-send: 1er arg = archivo (dir actual o Descargas), 2do = subcarpeta existente en Vault
+_srv_send() {
+  local vault="/srv/compartido/Vault"
+  case $CURRENT in
+    2) _alternative 'files:archivo:_files' "downloads:archivo en Descargas:_files -W $HOME/Descargas" ;;
+    3) _values 'subcarpeta' ${vault}/*(/N:t) ;;
+  esac
+}
+compdef _srv_send srv-send
+
+# Docker ps resumido: nombre, puertos y estado
+dps() {
+  local bright="\e[1;37m" dim="\e[2m" reset="\e[0m"
+  echo -e "${bright}NAME                 PORTS                          STATUS${reset}"
+  echo -e "${dim}------------------------------------------------------------------${reset}"
+  docker ps --format '{{.Names}}\t{{.Ports}}\t{{.Status}}' | \
+    awk -F'\t' '{ printf "%-20s %-30s %s\n", $1, ($2==""?"-":$2), $3 }'
+}
+
+# Docker compose ps resumido: nombre, puertos y estado (en el directorio del proyecto)
+dcps() {
+  local bright="\e[1;37m" dim="\e[2m" reset="\e[0m"
+  echo -e "${bright}NAME                 PORTS                          STATUS${reset}"
+  echo -e "${dim}------------------------------------------------------------------${reset}"
+  docker compose ps --format '{{.Name}}\t{{.Ports}}\t{{.Status}}' | \
+    awk -F'\t' '{ printf "%-20s %-30s %s\n", $1, ($2==""?"-":$2), $3 }'
+}
+
+# Entra a un contenedor por fzf (bash si existe, si no sh)
+dsh() {
+  local cid
+  cid=$(docker ps --format '{{.Names}}' | fzf --prompt="Contenedor > ")
+  [[ -n $cid ]] && docker exec -it "$cid" sh -c "command -v bash >/dev/null && exec bash || exec sh"
+}
+
+# Logs de un contenedor elegido por fzf
+dlogsf() {
+  local cid
+  cid=$(docker ps --format '{{.Names}}' | fzf --prompt="Logs de > ")
+  [[ -n $cid ]] && docker logs -f --tail=100 "$cid"
+}
+
+# Detiene uno o varios contenedores elegidos por fzf
+dstopf() {
+  local cids
+  cids=$(docker ps --format '{{.Names}}' | fzf -m --prompt="Detener > ")
+  [[ -n $cids ]] && echo "$cids" | xargs docker stop
+}
+
+# Elimina uno o varios contenedores (incluso detenidos) elegidos por fzf
+drmf() {
+  local cids
+  cids=$(docker ps -a --format '{{.Names}}' | fzf -m --prompt="Eliminar > ")
+  [[ -n $cids ]] && echo "$cids" | xargs docker rm
+}
+
 # Muestra uso de disco del directorio actual
 espacio() {
   local bright="\e[1;37m" dim="\e[2m" reset="\e[0m" bold="\e[1m"
