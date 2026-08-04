@@ -6,9 +6,9 @@ build_menu() {
         MAC=$(echo "$line" | awk '{print $2}')
         NAME=$(echo "$line" | awk '{$1=$2=""; print substr($0,3)}')
         if bluetoothctl info "$MAC" | grep -q "Connected: yes"; then
-            echo "  $NAME (conectado)"
+            echo "  $NAME  $MAC (conectado)"
         else
-            echo "  $NAME"
+            echo "  $NAME  $MAC"
         fi
     done < <(bluetoothctl devices)
 }
@@ -30,15 +30,16 @@ do_action() {
             ;;
         "  Scan")
             notify-send "Bluetooth" "Escaneando 10s..." -t 2000
-            bluetoothctl --timeout 10 scan on
+            bluetoothctl --timeout 10 scan on >/dev/null 2>&1
+            list_entries
             ;;
         "  Power off")
             bluetoothctl power off
             ;;
         *)
-            NAME=$(echo "$CHOICE" | sed 's/^[^ ]*  //; s/ (conectado)$//')
-            MAC=$(bluetoothctl devices | awk -v n="$NAME" '$0 ~ n {print $2; exit}')
+            MAC=$(echo "$CHOICE" | grep -oE '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}')
             [ -z "$MAC" ] && exit 1
+            NAME=$(echo "$CHOICE" | sed -E "s/^[^ ]*  //; s/  ${MAC}( \(conectado\))?\$//")
             if bluetoothctl info "$MAC" | grep -q "Connected: yes"; then
                 bluetoothctl disconnect "$MAC"
                 notify-send "Bluetooth" "Desconectado de $NAME" -t 2000
