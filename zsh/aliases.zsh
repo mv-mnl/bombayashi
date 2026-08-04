@@ -73,12 +73,33 @@ alias gca='git commit --amend'
 alias gpf='git push --force-with-lease'
 alias gb='git branch -vv --sort=-committerdate'
 
+# Docker
+alias d='docker'
+alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcr='docker compose restart'
+alias dcb='docker compose build'
+alias dcl='docker compose logs -f --tail=100'
+alias dimg='docker images'
+alias dnet='docker network ls'
+alias dvol='docker volume ls'
+alias dstopall='docker stop $(docker ps -q)'
+alias drmall='docker rm $(docker ps -aq)'
+alias dclean='docker system prune -af'
+alias dvolclean='docker volume prune -f'
+
 # Python
 alias py='python3'
 alias pip='pip3'
 alias venv='python3 -m venv'
 alias venv-on='source bin/activate'
 alias venv-off='deactivate'
+
+# Carpeta compartida
+alias srv='cd /srv/compartido'
+alias srvl='la /srv/compartido'
+alias srvv='cd /srv/compartido/Vault'
 
 # Misc
 alias please='sudo'
