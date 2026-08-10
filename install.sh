@@ -43,6 +43,7 @@ PKGS=(
     hyprpaper                      # fondo de pantalla
     swaync                         # centro de notificaciones
     hyprlock                       # pantalla de bloqueo
+    hypridle                       # bloqueo automático por inactividad
     libnotify                      # notify-send
 
     # --- Terminal ---
