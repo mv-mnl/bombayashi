@@ -14,9 +14,11 @@ idled=$((idle2 - idle1))
 usage=0
 [ "$totald" -gt 0 ] && usage=$(( (100 * (totald - idled)) / totald ))
 
-temp_file=$(find /sys/devices/pci0000:00/0000:00:18.3/hwmon -name temp1_input 2>/dev/null | head -1)
+temp_file=$(for h in /sys/class/hwmon/hwmon*; do
+    [ "$(cat "$h/name" 2>/dev/null)" = "coretemp" ] && echo "$h/temp1_input" && break
+done)
 temp="n/d"
-[ -n "$temp_file" ] && temp=$(( $(cat "$temp_file") / 1000 ))
+[ -n "$temp_file" ] && [ -r "$temp_file" ] && temp=$(( $(cat "$temp_file") / 1000 ))
 
 class="normal"
 [ "$temp" != "n/d" ] && [ "$temp" -ge 85 ] && class="critical"
