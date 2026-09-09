@@ -43,10 +43,14 @@ PKGS=(
     hyprpaper                      # fondo de pantalla
     swaync                         # centro de notificaciones
     hyprlock                       # pantalla de bloqueo
+    hypridle                       # bloqueo automático por inactividad
     libnotify                      # notify-send
 
     # --- Terminal ---
     kitty
+
+    # --- Fuentes / iconos ---
+    ttf-jetbrains-mono-nerd         # glifos usados en waybar, rofi y kitty
 
     # --- Shell ---
     zsh
