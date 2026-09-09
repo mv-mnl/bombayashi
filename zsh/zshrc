@@ -9,4 +9,3 @@ source "$ZSH_CONFIG_DIR/prompt.zsh"
 source "$ZSH_CONFIG_DIR/funciones.zsh"
 
 umask 002
-
