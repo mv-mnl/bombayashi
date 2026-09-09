@@ -48,6 +48,9 @@ PKGS=(
     # --- Terminal ---
     kitty
 
+    # --- Fuentes / iconos ---
+    ttf-jetbrains-mono-nerd         # glifos usados en waybar, rofi y kitty
+
     # --- Shell ---
     zsh
     zsh-autosuggestions
