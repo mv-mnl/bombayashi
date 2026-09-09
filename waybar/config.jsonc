@@ -9,7 +9,7 @@
     "spacing": 4,
 
     "modules-left": ["hyprland/workspaces", "network"],
-    "modules-center": ["clock"],
+    "modules-center": ["clock", "battery"],
     "modules-right": [
         "pulseaudio",
         "backlight",
@@ -28,6 +28,18 @@
     "clock": {
         "format": "{:%H:%M   %a %d %b}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip-format": "{timeTo}"
     },
 
     "pulseaudio": {
