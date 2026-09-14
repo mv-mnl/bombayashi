@@ -187,3 +187,12 @@ espacio() {
   fi
   echo ""
 }
+
+
+commit() {
+  if [[ -z "$1" ]]; then
+    echo "Uso: commit <mensaje>"
+    return 1
+  fi
+  git add -A && git commit -m "$1"
+}
