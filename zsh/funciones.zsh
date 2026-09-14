@@ -196,3 +196,5 @@ commit() {
   fi
   git add -A && git commit -m "$*"
 }
+# Evita que zsh intente expandir como glob caracteres como ( ) [ ] * ? en el mensaje
+alias commit='noglob commit'
