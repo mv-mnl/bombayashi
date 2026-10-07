@@ -1,4 +1,4 @@
-# Configuración de Hyprland (Bully-ye)
+# Configuración de Hyprland
 
 Este directorio contiene la configuración de [Hyprland](https://hyprland.org/), construida de forma modular para que sea fácil de mantener, leer y modificar.
 
