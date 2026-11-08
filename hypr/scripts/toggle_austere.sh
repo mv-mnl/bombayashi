@@ -7,10 +7,7 @@ STATE_FILE="/tmp/hypr_austere_mode"
 
 if [ -f "$STATE_FILE" ]; then
     # Restaurar configuración actual
-    hyprctl keyword general:gaps_in 5
-    hyprctl keyword general:gaps_out 10
-    hyprctl keyword general:border_size 2
-    hyprctl keyword decoration:rounding 10
+    hyprctl eval 'hl.config({ general = { gaps_in = 5, gaps_out = 10, border_size = 2 }, decoration = { rounding = 10 } })'
     rm -f "$STATE_FILE"
     notify-send "Hyprland" "Modo Normal Activado" -t 2000
 
@@ -19,10 +16,7 @@ if [ -f "$STATE_FILE" ]; then
 
 else
     # Activar configuración austera
-    hyprctl keyword general:gaps_in 0
-    hyprctl keyword general:gaps_out 0
-    hyprctl keyword general:border_size 0
-    hyprctl keyword decoration:rounding 0
+    hyprctl eval 'hl.config({ general = { gaps_in = 0, gaps_out = 0, border_size = 0 }, decoration = { rounding = 0 } })'
     touch "$STATE_FILE"
     notify-send "Hyprland" "Modo Austero Activado" -t 2000
 

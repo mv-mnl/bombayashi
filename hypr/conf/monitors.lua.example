@@ -1,0 +1,6 @@
+-- ------------------------------------------------------------------------------
+-- 1. MONITORES
+-- ------------------------------------------------------------------------------
+-- Detecta la resolución y tasa de refresco preferida de forma automática
+
+-- hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1.50 })
