@@ -7,7 +7,7 @@ do_action() {
     case "$1" in
         "  Lock")      loginctl lock-session ;;
         "  Suspend")   systemctl suspend ;;
-        "  Logout")    hyprctl dispatch exit ;;
+        "  Logout")    hyprctl dispatch 'hl.dsp.exit()' ;;
         "  Reboot")    systemctl reboot ;;
         "  Shutdown")  systemctl poweroff ;;
     esac

@@ -11,7 +11,7 @@ list_workspaces() {
 
 do_action() {
     WS=$(echo "$1" | awk '{print $2}')
-    hyprctl dispatch workspace "$WS"
+    hyprctl dispatch "hl.dsp.focus({ workspace = \"$WS\" })"
 }
 
 if [ -n "$ROFI_RETV" ]; then
