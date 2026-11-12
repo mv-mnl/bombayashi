@@ -9,7 +9,7 @@
     "spacing": 4,
 
     "modules-left": ["hyprland/workspaces", "network"],
-    "modules-center": ["clock", "battery"],
+    "modules-center": ["clock", "battery", "custom/disk"],
     "modules-right": [
         "pulseaudio",
         "backlight",
@@ -96,6 +96,14 @@
     "memory": {
         "format": "{}% ",
         "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB usados"
+    },
+
+    "custom/disk": {
+        "exec": "~/.config/waybar/scripts/disk.sh",
+        "return-type": "json",
+        "interval": 30,
+        "format": "{}",
+        "tooltip": true
     },
 
     "custom/power": {

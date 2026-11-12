@@ -38,6 +38,7 @@ tooltip label {
 #custom-cpu,
 #custom-gpu,
 #memory,
+#custom-disk,
 #custom-power {
     padding: 0 10px;
     margin: 5px 2px;
@@ -84,11 +85,13 @@ tooltip label {
 /* --- Estados de alerta: solo peso/brillo, nunca color --- */
 #pulseaudio.muted,
 #network.disconnected,
-#memory.warning {
+#memory.warning,
+#custom-disk.warning {
     color: @fg-dim;
 }
 
 #memory.critical,
+#custom-disk.critical,
 #backlight.critical,
 #custom-cpu.critical,
 #custom-gpu.critical,
