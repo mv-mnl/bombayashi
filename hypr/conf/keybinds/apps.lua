@@ -9,6 +9,7 @@ hl.bind(mainMod .. " + R",         hl.dsp.exec_cmd("rofi -show drun"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd(rofi .. "menu.sh"))
 hl.bind(mainMod .. " + B",         hl.dsp.exec_cmd("firefox"))
 hl.bind(mainMod .. " + E",         hl.dsp.workspace.toggle_special("audio"))
+hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("~/.local/bin/estilo"))   -- cambiar de estilo (main / larpeo)
 
 -- Rofi scripts
 hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd(rofi .. "network.sh"))
