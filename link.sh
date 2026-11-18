@@ -10,6 +10,17 @@ for dir in hypr kitty rofi waybar; do
     echo "  linked: $CONFIG/$dir -> $DOTS/$dir"
 done
 
+# Colores que genera quickshell en larpeo (SUPER + S). El rofi de larpeo falla si
+# su @import no existe, así que se dejan archivos vacíos para cuando se cambie.
+STATE="$HOME/.local/state/bombayashi"
+mkdir -p "$STATE"
+[ -e "$STATE/rofi-colors.rasi" ]  || : > "$STATE/rofi-colors.rasi"
+[ -e "$STATE/kitty-colors.conf" ] || : > "$STATE/kitty-colors.conf"
+echo "  created: $STATE"
+
+# Carpetas de usuario que usan los atajos (y quickshell en larpeo)
+mkdir -p "$HOME/Imágenes/Capturas" "$HOME/Imágenes/Wallpapers" "$HOME/.config/btop/themes"
+
 # Comando `estilo` (cambiar entre main / larpeo). Se COPIA en vez de enlazar
 # para que exista aunque la rama actual no tenga bin/estilo.
 mkdir -p "$HOME/.local/bin"
