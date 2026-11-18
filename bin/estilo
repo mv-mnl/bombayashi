@@ -22,6 +22,14 @@ declare -A DESC=(
 
 notify() { notify-send -a "Estilo" "$1" "$2" 2>/dev/null; }
 
+# `qs kill` busca la config en ~/.config/quickshell; en una rama sin quickshell/
+# esa ruta no existe y no encuentra la instancia, así que también se mata por nombre.
+stop_quickshell() {
+    qs kill >/dev/null 2>&1
+    pkill -x qs 2>/dev/null
+    pkill -x quickshell 2>/dev/null
+}
+
 cd "$REPO" || { echo "No existe $REPO"; exit 1; }
 current=$(git rev-parse --abbrev-ref HEAD)
 target="${1:-}"
@@ -70,10 +78,10 @@ git pull --ff-only --quiet 2>/dev/null || notify "Aviso" "No se pudo actualizar 
 hyprctl reload >/dev/null 2>&1
 if grep -q '"qs ' "$REPO/hypr/conf/autostart.lua" 2>/dev/null; then
     pkill -x waybar; pkill -x swaync
-    qs kill >/dev/null 2>&1; pkill -x quickshell; sleep 0.5
+    stop_quickshell; sleep 0.5
     setsid -f qs -n >/dev/null 2>&1
 else
-    qs kill >/dev/null 2>&1; pkill -x quickshell; pkill -x waybar; pkill -x swaync; sleep 0.5
+    stop_quickshell; pkill -x waybar; pkill -x swaync; sleep 0.5
     setsid -f waybar >/dev/null 2>&1
     setsid -f swaync >/dev/null 2>&1
 fi
