@@ -1,0 +1,84 @@
+#!/bin/bash
+# ------------------------------------------------------------------------------
+# estilo — cambia entre los estilos del escritorio (ramas de ~/bombayashi)
+#
+#   estilo              menú (rofi) para elegir
+#   estilo larpeo       isla dinámica (quickshell)
+#   estilo main         clásico (waybar + swaync)
+#   estilo actual       muestra la rama actual
+#
+# Hace fetch, cambia de rama, hace pull (solo fast-forward) y reinicia la capa
+# visual que corresponde. No toca nada si hay cambios sin commitear.
+#
+# Se instala COPIADO en ~/.local/bin (link.sh) para que exista en cualquier
+# rama, aunque la rama actual no tenga este archivo.
+# ------------------------------------------------------------------------------
+
+REPO="$HOME/bombayashi"
+declare -A DESC=(
+    [larpeo]="Isla dinámica (quickshell)"
+    [main]="Clásico (waybar)"
+)
+
+notify() { notify-send -a "Estilo" "$1" "$2" 2>/dev/null; }
+
+cd "$REPO" || { echo "No existe $REPO"; exit 1; }
+current=$(git rev-parse --abbrev-ref HEAD)
+target="${1:-}"
+
+if [ "$target" = "actual" ]; then
+    echo "$current · ${DESC[$current]:-}"
+    exit 0
+fi
+
+# Sin argumento: elegir con rofi
+if [ -z "$target" ]; then
+    choice=$(
+        for b in larpeo main; do
+            mark=""; [ "$b" = "$current" ] && mark="   (actual)"
+            printf "%s  ·  %s%s\n" "$b" "${DESC[$b]}" "$mark"
+        done | rofi -dmenu -i -p "󰏘  Estilo" \
+            -theme-str 'window {width: 540px;} listview {lines: 2;} entry {placeholder: "elige un estilo";}'
+    )
+    [ -z "$choice" ] && exit 0
+    target="${choice%%  *}"
+fi
+
+case "$target" in
+    larpeo|main) ;;
+    *) echo "uso: estilo [larpeo|main|actual]"; exit 1 ;;
+esac
+
+if [ -n "$(git status --porcelain)" ]; then
+    notify "No se cambió el estilo" "Hay cambios sin commitear en ~/bombayashi. Haz commit (o git stash) primero."
+    echo "Hay cambios sin commitear en $REPO; no se cambió nada." >&2
+    exit 1
+fi
+
+git fetch origin --quiet || notify "Sin conexión" "Se usa la versión local de '$target'."
+
+if [ "$target" != "$current" ]; then
+    git checkout --quiet "$target" || { notify "Error" "No se pudo cambiar a '$target'."; exit 1; }
+fi
+git rev-parse '@{u}' >/dev/null 2>&1 || git branch --quiet -u "origin/$target" 2>/dev/null
+git pull --ff-only --quiet 2>/dev/null || notify "Aviso" "No se pudo actualizar '$target' desde GitHub (¿divergió?)."
+
+# Enlaces que una rama puede necesitar y todavía no existan
+[ -d "$REPO/quickshell" ] && [ ! -e "$HOME/.config/quickshell" ] && ln -s "$REPO/quickshell" "$HOME/.config/quickshell"
+
+# Reiniciar la capa visual según lo que arranque esta rama
+hyprctl reload >/dev/null 2>&1
+if grep -q '"qs ' "$REPO/hypr/conf/autostart.lua" 2>/dev/null; then
+    pkill -x waybar; pkill -x swaync
+    qs kill >/dev/null 2>&1; pkill -x quickshell; sleep 0.5
+    setsid -f qs -n >/dev/null 2>&1
+else
+    qs kill >/dev/null 2>&1; pkill -x quickshell; pkill -x waybar; pkill -x swaync; sleep 0.5
+    setsid -f waybar >/dev/null 2>&1
+    setsid -f swaync >/dev/null 2>&1
+fi
+"$REPO/hypr/scripts/wallpaper.sh" >/dev/null 2>&1 &
+
+sleep 1.5
+notify "Estilo: $target" "${DESC[$target]}"
+echo "Estilo: $target · ${DESC[$target]}"

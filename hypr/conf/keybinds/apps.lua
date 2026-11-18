@@ -25,6 +25,7 @@ hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("qs ipc call panel toggle aud
 hl.bind(mainMod .. " + A",         hl.dsp.exec_cmd("qs ipc call island toggle"))
 hl.bind(mainMod .. " + S",         hl.dsp.exec_cmd("qs ipc call settings toggle"))   -- pantalla de ajustes
 hl.bind(mainMod .. " + F1",        hl.dsp.exec_cmd("qs ipc call settings open 4"))   -- ayuda completa
+hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("~/.local/bin/estilo"))           -- cambiar de estilo (main / larpeo)
 hl.bind(mainMod .. " + W",         hl.dsp.exec_cmd("qs ipc call settings picker"))   -- carrusel de fondos
 hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("qs ipc call panel toggle notifications")) -- centro de notificaciones
 hl.bind(mainMod .. " + CTRL + N",  hl.dsp.exec_cmd("qs ipc call notifs dnd"))                 -- No molestar

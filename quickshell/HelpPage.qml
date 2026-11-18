@@ -174,6 +174,17 @@ Column {
             ]
         },
         {
+            icon: "󰏘", title: "Estilos y actualizaciones (git)",
+            intro: "El repo ~/bombayashi tiene dos estilos, uno por rama: larpeo (esta isla dinámica con quickshell) y main (el clásico con waybar).",
+            items: [
+                ["SUPER + SHIFT + E", "Elegir estilo con un menú. También: botón en Barra e isla, o el comando 'estilo' en la terminal."],
+                ["estilo larpeo | main", "Cambia directo. Hace fetch, cambia de rama, pull (solo fast-forward) y reinicia la barra que toca (quickshell o waybar + swaync)."],
+                ["estilo actual", "Dice en qué estilo estás."],
+                ["Al iniciar sesión", "Se hace git fetch y se actualizan las dos ramas con lo último de GitHub (solo si es seguro: sin cambios sin commitear y sin divergencias). Avisa con una notificación."],
+                ["Cambios sin commitear", "Si editaste algo y no hiciste commit, ni el pull automático ni 'estilo' tocan nada: avisan para que hagas commit o git stash primero."],
+            ]
+        },
+        {
             icon: "󰆍", title: "Terminal, btop y rofi",
             intro: "Todos toman los colores de esta pantalla.",
             items: [

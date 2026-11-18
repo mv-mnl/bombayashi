@@ -16,6 +16,12 @@ mkdir -p "$CONFIG/btop/themes"
 ln -s "$DOTS/btop/btop.conf" "$CONFIG/btop/btop.conf"
 echo "  linked: $CONFIG/btop/btop.conf -> $DOTS/btop/btop.conf"
 
+# Comando `estilo` (cambiar entre main / larpeo). Se COPIA en vez de enlazar
+# para que exista aunque la rama actual no tenga bin/estilo.
+mkdir -p "$HOME/.local/bin"
+install -m 755 "$DOTS/bin/estilo" "$HOME/.local/bin/estilo"
+echo "  installed: $HOME/.local/bin/estilo"
+
 # zsh
 [ -d "$CONFIG/zsh" ] && rm -rf "$CONFIG/zsh"
 ln -s "$DOTS/zsh" "$CONFIG/zsh"

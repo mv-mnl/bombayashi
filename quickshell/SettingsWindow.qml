@@ -506,6 +506,21 @@ PanelWindow {
                     value: Settings.opts.barScale
                     onMoved: v => Settings.opts.barScale = v
                 }
+                Section { text: "ESTILO DEL ESCRITORIO" }
+                Row {
+                    spacing: 10
+                    Button {
+                        primary: true
+                        text: "󰏘  Cambiar de estilo (SUPER+SHIFT+E)"
+                        onClicked: { Settings.open = false; Quickshell.execDetached(["sh", "-c", "~/.local/bin/estilo"]); }
+                    }
+                    Txt {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "larpeo = isla · main = clásico (waybar)"
+                        color: Theme.fgDim
+                        font.pixelSize: 11
+                    }
+                }
                 Section { text: "ISLA DINÁMICA" }
                 Toggle {
                     label: "Brillo que respira"
