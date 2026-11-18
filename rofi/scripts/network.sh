@@ -35,8 +35,8 @@ do_action() {
                 SECURITY=$(nmcli -t -f ssid,security dev wifi list 2>/dev/null \
                     | awk -F: -v s="$SSID" '$1==s{print $2; exit}')
                 if [ -n "$SECURITY" ] && [ "$SECURITY" != "--" ]; then
-                    PASS=$(rofi -dmenu -password -p "  Password for $SSID" \
-                        -theme-str 'window {width: 400px;} listview {lines: 0;}')
+                    PASS=$(rofi -dmenu -password -p "󰌾  $SSID" \
+                        -theme-str 'window {width: 460px;} listview {lines: 0;} entry { placeholder: "contraseña del wifi"; }' </dev/null)
                     [ -z "$PASS" ] && exit 0
                     nmcli dev wifi connect "$SSID" password "$PASS"
                 else

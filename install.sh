@@ -39,9 +39,10 @@ PKGS=(
     qt6-wayland
 
     # --- UI ---
-    waybar                         # barra de estado
+    quickshell                     # barra + isla dinámica + notificaciones
+    cava                           # visualizador de audio de la isla
+    waybar                         # barra de estado (respaldo)
     hyprpaper                      # fondo de pantalla
-    swaync                         # centro de notificaciones
     hyprlock                       # pantalla de bloqueo
     hypridle                       # bloqueo automático por inactividad
     libnotify                      # notify-send

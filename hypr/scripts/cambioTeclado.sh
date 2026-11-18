@@ -10,8 +10,8 @@ STATUS=$(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .act
 
 if [[ "$STATUS" == *"Spanish"* ]]; then
     notify-send "Hyprland" "Teclado: Español" -i input-keyboard -t 2000
-    echo "es" > /tmp/hypr_keyboard_layout
+    echo "es" > "${XDG_RUNTIME_DIR:-/tmp}/hypr_keyboard_layout"
 else
     notify-send "Hyprland" "Teclado: Inglés (US)" -i input-keyboard -t 2000
-    echo "us" > /tmp/hypr_keyboard_layout
+    echo "us" > "${XDG_RUNTIME_DIR:-/tmp}/hypr_keyboard_layout"
 fi

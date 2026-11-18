@@ -16,7 +16,8 @@ bw_session_valid() {
 
 bw_unlock() {
     local password session
-    password=$(rofi -dmenu -password -p "  Master password")
+    password=$(rofi -dmenu -password -p "󰌾  Bitwarden" \
+        -theme-str 'entry { placeholder: "contraseña maestra"; } listview { lines: 0; } window { width: 460px; }' </dev/null)
     [ -z "$password" ] && return 1
 
     session=$(bw unlock "$password" --raw 2>/dev/null)

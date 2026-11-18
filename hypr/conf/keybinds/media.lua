@@ -13,8 +13,8 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(audio .. " down"), { locked = tr
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd(audio .. " mute-toggle"))
 
 -- Brillo (teclas multimedia - requiere 'brightnessctl')
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl s 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl s 5%-"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -c backlight s 5%+ && qs ipc call osd brightness"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -c backlight s 5%- && qs ipc call osd brightness"), { locked = true, repeating = true })
 
 -- Captura de una región -> ~/Imágenes/Capturas y al portapapeles
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(

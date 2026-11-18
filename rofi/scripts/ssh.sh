@@ -1,7 +1,17 @@
 #!/bin/bash
 # Doble modo: standalone (keybind propio) o modo-script de rofi (pestaña del menu principal)
 
-HOSTS=$(awk '/^Host [^*]/{print $2}' ~/.ssh/config 2>/dev/null)
+# Hosts de ~/.ssh/config (todos los alias de cada línea "Host", sin comodines)
+# + los servidores a los que ya te conectaste (~/.ssh/known_hosts, no hasheados)
+HOSTS=$(
+    {
+        awk 'tolower($1) == "host" { for (i = 2; i <= NF; i++) if ($i !~ /[*?!]/) print $i }' ~/.ssh/config
+        awk '$1 !~ /^[|#@]/ && NF {
+                n = split($1, names, ",")
+                for (i = 1; i <= n; i++) { h = names[i]; gsub(/^\[|\]:[0-9]+$/, "", h); print h }
+             }' ~/.ssh/known_hosts
+    } 2>/dev/null | awk 'NF && !seen[$0]++'
+)
 
 if [ -n "$ROFI_RETV" ]; then
     if [ -n "$1" ]; then

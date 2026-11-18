@@ -2,7 +2,8 @@
 -- 2. INICIO AUTOMÁTICO (Autostart)
 -- ------------------------------------------------------------------------------
 hl.on("hyprland.start", function()
-    hl.exec_cmd("waybar & hyprpaper & swaync")
+    -- Barra + isla dinámica + notificaciones: quickshell (config en ~/.config/quickshell)
+    hl.exec_cmd("qs & hyprpaper")
     hl.exec_cmd("~/.config/hypr/scripts/wallpaper.sh")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")

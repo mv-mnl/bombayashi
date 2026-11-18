@@ -4,7 +4,7 @@
 hl.config({
     general = {
         gaps_in  = 5,
-        -- pegado a waybar, izquierda y derecha
+        -- pegado a la barra (quickshell), izquierda y derecha
         gaps_out = { top = 0, right = 0, bottom = 10, left = 0 },
         border_size = 2,
 
@@ -15,6 +15,11 @@ hl.config({
         },
 
         layout = "dwindle", -- Alternativa: master
+
+        -- Redimensionar arrastrando el borde/espacio entre ventanas con el mouse
+        resize_on_border         = true,
+        extend_border_grab_area  = 15,   -- px extra alrededor del borde para agarrarlo
+        hover_icon_on_border     = true, -- cursor de redimensionar al pasar por el borde
     },
 
     -- --------------------------------------------------------------------------

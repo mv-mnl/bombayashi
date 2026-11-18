@@ -53,5 +53,9 @@ case "$1" in
         ;;
     get)
         get_volume
+        exit 0
         ;;
 esac
+
+# Mostrar el OSD en la isla dinámica de quickshell (si está corriendo)
+qs ipc call osd volume >/dev/null 2>&1 &

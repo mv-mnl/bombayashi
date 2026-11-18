@@ -7,25 +7,37 @@ configuration {
     ssh-command:            "{terminal} -e '{ssh-client} {host} [-p {port}]'";
     drun-display-format:    "{name}";
     window-format:          "{w} · {c} · {t}";
+    display-drun:           "󰀻 ";
+    display-run:            " ";
+    display-window:         "󱂬 ";
+    display-ssh:            "󰣀 ";
 }
 
+/* ------------------------------------------------------------------------------
+ * Tema a juego con la barra / isla de quickshell.
+ * Los colores por defecto (monocromo) se pisan con los que genera la pantalla de
+ * ajustes (SUPER + S) en ~/.local/state/bombayashi/rofi-colors.rasi (import al final).
+ * --------------------------------------------------------------------------- */
 * {
-    bg:       #0d0d0d;
-    bg-alt:   #1a1a1a;
-    fg:       #e6e6e6;
-    fg-dim:   #808080;
-    accent:   #ffffff;
-    urgent:   #cccccc;
+    bg:          #0d0d0de6;
+    bg-solid:    #0d0d0d;
+    bg-alt:      #1a1a1a;
+    fg:          #e6e6e6;
+    fg-dim:      #808080;
+    accent:      #ffffff;
+    accent-soft: #ffffff26;
+    border-col:  #ffffff33;
+    urgent:      #ff6b6b;
 
     /* Rofi trae un tema base (tipo Solarized) con sus propios nombres de
        propiedad; hay que pisarlos también o las filas de la lista quedan
        con los colores por defecto (crema/azul) sin importar lo de arriba. */
-    background: #0d0d0d;
-    foreground: #e6e6e6;
-    lightbg:    #1a1a1a;
-    lightfg:    #ffffff;
-    blue:       #999999;
-    red:        #cccccc;
+    background:  @bg-solid;
+    foreground:  @fg;
+    lightbg:     @bg-alt;
+    lightfg:     @accent;
+    blue:        @fg-dim;
+    red:         @urgent;
 
     background-color: transparent;
     text-color:       @fg;
@@ -33,24 +45,25 @@ configuration {
 
 window {
     background-color: @bg;
-    border:           2px solid;
-    border-color:     @accent;
-    border-radius:    12px;
-    width:            500px;
-    padding:          6px;
+    border:           1px solid;
+    border-color:     @border-col;
+    border-radius:    26px;
+    width:            560px;
+    padding:          14px;
 }
 
 mainbox {
+    border:           0px;
     background-color: transparent;
-    spacing:          6px;
-    padding:          6px;
+    spacing:          12px;
+    padding:          4px;
 }
 
 inputbar {
     background-color: @bg-alt;
-    border-radius:    8px;
-    padding:          10px 14px;
-    spacing:          8px;
+    border-radius:    999px;
+    padding:          12px 18px;
+    spacing:          10px;
     children:         [ prompt, entry ];
 }
 
@@ -61,44 +74,59 @@ prompt {
 entry {
     placeholder:       "buscar...";
     placeholder-color: @fg-dim;
+    cursor:            text;
 }
 
 listview {
     background-color: transparent;
     lines:            8;
     scrollbar:        false;
-    spacing:          2px;
+    spacing:          4px;
+    border:           0px;
+    fixed-height:     false;
 }
 
 element {
     background-color: transparent;
-    border-radius:    6px;
-    padding:          8px 10px;
-    spacing:          8px;
+    border-radius:    16px;
+    padding:          10px 14px;
+    spacing:          12px;
     children:         [ element-icon, element-text ];
 }
 
 element-icon {
-    size: 22px;
+    size: 26px;
 }
 
 element-text {
-    text-color: inherit;
+    text-color:     inherit;
     vertical-align: 0.5;
 }
 
-element.selected {
-    background-color: @accent;
-    text-color:       @bg;
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color:       @fg;
 }
 
-element.urgent {
+element selected.normal, element selected.active {
+    background-color: @accent-soft;
+    text-color:       @accent;
+}
+
+element normal.active, element alternate.active {
+    text-color: @accent;
+}
+
+element.urgent, element selected.urgent {
     background-color: @urgent;
-    text-color:       @bg;
+    text-color:       @bg-solid;
 }
 
 message {
+    border:           0px;
     background-color: @bg-alt;
-    border-radius:    6px;
-    padding:          6px 10px;
+    border-radius:    14px;
+    padding:          10px 14px;
 }
+
+@import "~/.local/state/bombayashi/rofi-colors.rasi"

@@ -3,7 +3,7 @@
 # Este script cambia entre una configuración con bordes y espacios (actual) 
 # y una "full austera" sin bordes ni espacios.
 
-STATE_FILE="/tmp/hypr_austere_mode"
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/hypr_austere_mode"
 
 if [ -f "$STATE_FILE" ]; then
     # Restaurar configuración actual
@@ -11,7 +11,7 @@ if [ -f "$STATE_FILE" ]; then
     rm -f "$STATE_FILE"
     notify-send "Hyprland" "Modo Normal Activado" -t 2000
 
-    waybar &
+    qs -d >/dev/null 2>&1
 
 
 else
@@ -20,5 +20,5 @@ else
     touch "$STATE_FILE"
     notify-send "Hyprland" "Modo Austero Activado" -t 2000
 
-    killall waybar
+    qs kill
 fi

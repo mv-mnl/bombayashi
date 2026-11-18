@@ -6,28 +6,29 @@ mainbox {
 
 columns {
     orientation: horizontal;
-    spacing: 6px;
+    spacing: 12px;
     children: [ sidebar, listview ];
 }
 
 sidebar {
     orientation: vertical;
-    width: 160px;
+    width: 170px;
     background-color: @bg-alt;
-    border-radius: 8px;
-    padding: 4px;
+    border-radius: 18px;
+    padding: 6px;
+    spacing: 2px;
 }
 
 button {
     text-color: @fg;
-    padding: 8px 10px;
+    padding: 10px 14px;
     horizontal-align: 0;
-    border-radius: 6px;
+    border-radius: 14px;
 }
 
 button selected {
-    background-color: @accent;
-    text-color: @bg;
+    background-color: @accent-soft;
+    text-color: @accent;
 }
 
 listview {
@@ -36,5 +37,5 @@ listview {
 }
 
 window {
-    width: 750px;
+    width: 800px;
 }

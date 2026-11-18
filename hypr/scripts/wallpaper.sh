@@ -16,6 +16,13 @@ fi
 
 IMG="${IMAGES[0]}"
 
+# Si se eligió un fondo desde la pantalla de ajustes (SUPER + S), usar ese
+STATE="$HOME/.local/state/bombayashi/settings.json"
+if [ -f "$STATE" ]; then
+    SAVED=$(jq -r '.wallpaper // empty' "$STATE" 2>/dev/null)
+    [ -n "$SAVED" ] && [ -f "$SAVED" ] && IMG="$SAVED"
+fi
+
 if ! pgrep -x hyprpaper >/dev/null; then
     hyprpaper &
     sleep 0.5
