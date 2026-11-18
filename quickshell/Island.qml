@@ -525,6 +525,7 @@ Rectangle {
                     Label {
                         width: parent.width
                         text: Media.artist || (Media.active ? "" : "Pon algo en Spotify o el navegador")
+                        visible: text !== ""
                         color: Theme.fgDim
                         font.pixelSize: 11
                     }
@@ -533,6 +534,17 @@ Rectangle {
                         height: 4
                         value: Media.progress
                         visible: Media.active
+                    }
+                    // Sin música: atajo a Spotify (lo enfoca si está abierto, si no lo abre)
+                    Chip {
+                        visible: !Media.active
+                        text: "󰓇  Abrir Spotify"
+                        color: Theme.accent
+                        size: 12
+                        onClicked: {
+                            island.expanded = false;
+                            Quickshell.execDetached(["sh", "-c", "~/.config/quickshell/scripts/spotify.sh"]);
+                        }
                     }
                     Item {
                         width: parent.width
