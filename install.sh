@@ -39,16 +39,20 @@ PKGS=(
     qt6-wayland
 
     # --- UI ---
-    quickshell                     # barra + isla dinámica + notificaciones
+    quickshell                     # barra + isla dinámica + notificaciones (estilo larpeo)
     cava                           # visualizador de audio de la isla
-    waybar                         # barra de estado (respaldo)
+    matugen                        # paleta de colores a partir del fondo (SUPER + S)
+    waybar                         # barra de estado (estilo main)
+    swaync                         # notificaciones (estilo main)
     hyprpaper                      # fondo de pantalla
     hyprlock                       # pantalla de bloqueo
     hypridle                       # bloqueo automático por inactividad
     libnotify                      # notify-send
+    curl                           # descarga de fondos (wallhaven) en quickshell
 
     # --- Terminal ---
     kitty
+    btop                           # monitor del sistema (panel de quickshell)
 
     # --- Fuentes / iconos ---
     ttf-jetbrains-mono-nerd         # glifos usados en waybar, rofi y kitty
@@ -69,6 +73,7 @@ PKGS=(
     pipewire-audio
     pipewire-pulse
     wireplumber
+    libpulse                       # pactl
     easyeffects
 
     # --- Red ---
@@ -117,6 +122,31 @@ install_packages() {
     info "Instalando paquetes faltantes..."
     yay -S --needed --noconfirm "${PKGS[@]}"
     ok "Paquetes instalados"
+
+    # Uso de la iGPU en la barra (quickshell/scripts/gpu.sh): solo en Intel
+    if grep -qx '0x8086' /sys/class/drm/card*/device/vendor 2>/dev/null \
+        || lspci 2>/dev/null | grep -i 'vga\|display' | grep -qi intel; then
+        info "GPU Intel detectada: instalando intel-gpu-tools..."
+        yay -S --needed --noconfirm intel-gpu-tools
+        # intel_gpu_top necesita estos permisos para correr sin root
+        sudo setcap cap_perfmon,cap_sys_ptrace=ep "$(command -v intel_gpu_top)" \
+            || warn "setcap sobre intel_gpu_top falló (el % de GPU no se verá)"
+        ok "intel-gpu-tools listo"
+    fi
+}
+
+# Comprueba que lo imprescindible quedó instalado
+check_commands() {
+    local missing=()
+    for cmd in Hyprland qs cava matugen hyprpaper rofi kitty jq cliphist wl-copy \
+               brightnessctl pactl nmcli bluetoothctl notify-send curl btop; do
+        command -v "$cmd" &>/dev/null || missing+=("$cmd")
+    done
+    if (( ${#missing[@]} )); then
+        warn "Faltan comandos: ${missing[*]}"
+    else
+        ok "Todos los comandos necesarios están disponibles"
+    fi
 }
 
 # ── Servicios ─────────────────────────────────────────────────────────────────
@@ -151,8 +181,19 @@ set_zsh() {
 # ── Directorios ───────────────────────────────────────────────────────────────
 create_dirs() {
     info "Creando directorios necesarios..."
-    mkdir -p "$HOME/Imágenes/Capturas"
-    ok "~/Imágenes/Capturas creado"
+    local dirs=(
+        "$HOME/Imágenes/Capturas"           # capturas (keybinds/media.lua)
+        "$HOME/Imágenes/Wallpapers"         # fondos del selector de quickshell
+        "$HOME/Descargas"                   # zsh/funciones.zsh
+        "$HOME/.local/bin"                  # comando `estilo`
+        "$HOME/.local/state/bombayashi"     # ajustes y colores generados por quickshell
+        "$HOME/.config/btop/themes"         # tema de btop generado por quickshell
+        "$HOME/.cache"                      # zcompdump
+    )
+    for d in "${dirs[@]}"; do
+        mkdir -p "$d"
+        ok "${d/#$HOME/\~} creado"
+    done
 }
 
 # ── Symlinks ──────────────────────────────────────────────────────────────────
@@ -173,6 +214,7 @@ enable_services
 set_zsh
 create_dirs
 run_link
+check_commands
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

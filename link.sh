@@ -10,6 +10,17 @@ for dir in hypr kitty rofi waybar quickshell; do
     echo "  linked: $CONFIG/$dir -> $DOTS/$dir"
 done
 
+# Colores que genera quickshell (SUPER + S). rofi falla si el @import no existe,
+# así que se dejan archivos vacíos hasta que se generen los reales.
+STATE="$HOME/.local/state/bombayashi"
+mkdir -p "$STATE"
+[ -e "$STATE/rofi-colors.rasi" ]  || : > "$STATE/rofi-colors.rasi"
+[ -e "$STATE/kitty-colors.conf" ] || : > "$STATE/kitty-colors.conf"
+echo "  created: $STATE"
+
+# Carpetas de usuario que usan los atajos y quickshell
+mkdir -p "$HOME/Imágenes/Capturas" "$HOME/Imágenes/Wallpapers"
+
 # btop: solo el btop.conf (los temas los genera quickshell en ~/.config/btop/themes)
 mkdir -p "$CONFIG/btop/themes"
 [ -e "$CONFIG/btop/btop.conf" ] && rm -f "$CONFIG/btop/btop.conf"
